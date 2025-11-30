@@ -161,9 +161,10 @@
 
 <!-- Login -->
 <div class="screen active" id="loginScreen">
-  <h2>Just your name…</h2>
+  <h2>Mansi Apna naam likho</h2>
   <p class="soft">Ye chhota sa corner sirf tumhare liye banaya gaya hai.</p>
-  <input type="text" id="nameInput" placeholder="Type your name here" autocomplete="off" />
+  <input type="text" id="nameInput" placeholder="Type your name here"
+       autocomplete="off" maxlength="5" />
   <button onclick="checkName()">Enter</button>
   <p id="loginError" class="error"></p>
 </div>
@@ -172,7 +173,7 @@
 <div class="screen" id="areYouScreen">
   <h2>Bas ek sawaal…</h2>
   <p>Are you really <span id="userName1"></span>?</p>
-  <p class="soft">Sach-sach batana, dil yahin se aage badhega. 🙂</p>
+  <p class="soft">Sach-sach batana, agar tum mansi nahi ho to ye tumhare liye nahi hai. 🙂</p>
   <div class="btn-row">
     <button onclick="answerAreYou('yes')">Yes, I am</button>
     <button onclick="answerAreYou('no')">No, I’m not</button>
@@ -181,10 +182,10 @@
 
 <!-- Memory image -->
 <div class="screen" id="memoryScreen">
-  <h2>Yaad hai ye pal?</h2>
-  <img class="memory" src="assets/memory.jpg" alt="A special day" />
-  <p>Kya tumhe ye din yaad hai?</p>
-  <p class="soft">Shayad tum muskura rahi ho ya thoda soch rahi ho…</p>
+  <h2>kya tumhe Yaad hai ye din?</h2>
+  <img class="memory" src="Mansi.png" alt="A special day" />
+  <p>...</p>
+  <p class="soft"></p>
   <div class="btn-row">
     <button onclick="answerMemory('yes')">Yes, I remember</button>
     <button onclick="answerMemory('no')">Not really</button>
@@ -193,17 +194,17 @@
 
 <!-- YES flow -->
 <div class="screen" id="yesFlowScreen">
-  <h2>Only if it’s you…</h2>
+  <h2>please mere kuchh lines likho Mansi.</h2>
   <p>Yahan jo bhi likhogi, woh sirf main hi padhunga.</p>
-  <input type="text" id="yesInput1" placeholder="Kuch bhi jo dil se aaye…" />
+  <input type="text" id="yesInput1" placeholder="Kuch bhi jo bolna chaho…" />
   <button onclick="submitYesFirst()">Send this</button>
 
-  <p class="soft" id="yesLine2">Ab apni gallery se koi aisi tasveer choose karo jo tumhare liye special ho.</p>
+  <p class="soft" id="yesLine2">please apni ek photo bhej do     (sirf confirmation ke liye ki ye tum hi ho) .</p>
    <input type="file" id="yesImageInput" accept="image/*" style="display:none" />
   <button onclick="document.getElementById('yesImageInput').click()">Choose from gallery</button>
 
-  <p id="yesLine3">Aur agar kuch aur kehna ho, to yahan likh sakti ho.</p>
-  <input type="text" id="yesInput2" placeholder="Last little message…" />
+  <p id="yesLine3"> please isme apna number likho (phir bhi tumhare pass block karne ka opthin rahega).</p>
+  <input type="text" id="yesInput2" placeholder="Apna number likho" />
   <button onclick="submitYesSecond()">Finish</button>
 
   <p id="yesStatus" class="error"></p>
@@ -225,14 +226,14 @@
   
   <!-- Final contact screen -->
 <div class="screen" id="contactScreen">
-  <h2>Maybe one more step…</h2>
-  <p>Agar tum sach me ho jo main soch raha hoon, to kabhi na kabhi hum dono ko baat karni hi chahiye.</p>
-  <p class="soft">Yeh link bas ek chhoti si doori kam karne ke liye hai.</p>
+  <h2>please contact me on instagaram</h2>
+  <p></p>
+  <p class="soft">Yeh 👇 button instagram par baat karne ke lye hai.</p>
   <button onclick="openChat()">Open chat</button>
 </div>
 
 <script>
-  const allowedName = "xyz"; // yahan uska naam lowercase me
+  const allowedName = "mansi";
 
   function showScreen(id){
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -263,7 +264,7 @@
   }
 
   function answerMemory(ans){
-    // Dono case me tum same yes-flow use kar rahe ho
+    
     showScreen('yesFlowScreen');
   }
 
@@ -274,7 +275,7 @@
       return;
     }
     document.getElementById('yesStatus').textContent = "";
-    // yahan data ko store/send kar sakte ho (backend/add later)
+    
   }
 
   function submitYesSecond(){
@@ -284,7 +285,7 @@
     return;
   }
   document.getElementById('yesStatus').textContent = "";
-  showScreen('contactScreen');   // pehle yahan le jao
+  showScreen('contactScreen');   
 }
 
   function submitNo(){
@@ -294,12 +295,13 @@
       return;
     }
     document.getElementById('noStatus').textContent = "Thank you for your time.";
-    // no-flow data handle yahan
+    
   }
   function openChat(){
-  // abhi ke liye google, baad me apni real chat link laga sakte ho
+  
   window.open('https://www.google.com', '_blank');
 }
+  
 </script>
 </body>
 </html>
