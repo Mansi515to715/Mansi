@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Just for You</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Poppins',sans-serif;
+    min-height:100vh;
+    display:flex;justify-content:center;align-items:center;
+    background:radial-gradient(circle at top,#ffe4f2 0,#ffcfe3 30%,#fbb1b1 70%,#f7c8dd 100%);
+    background-size:200% 200%;
+    animation:bgMove 16s ease-in-out infinite;
+    overflow:hidden;
+    color:#3a1022;
+  }
+
+  /* floating hearts */
+  .heart-bg{
+    position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+  }
+  .heart{
+    position:absolute;width:18px;height:18px;
+    background:rgba(255,120,172,0.7);
+    transform:rotate(45deg);
+    animation:floatUp 12s linear infinite;
+    opacity:0;
+  }
+  .heart::before,.heart::after{
+    content:"";position:absolute;width:18px;height:18px;
+    background:inherit;border-radius:50%;
+  }
+  .heart::before{top:-9px;left:0;}
+  .heart::after{left:-9px;top:0;}
+  .heart:nth-child(1){left:12%;animation-delay:0s;}
+  .heart:nth-child(2){left:30%;animation-delay:3s;}
+  .heart:nth-child(3){left:55%;animation-delay:6s;}
+  .heart:nth-child(4){left:75%;animation-delay:9s;}
+  .heart:nth-child(5){left:88%;animation-delay:1.5s;}
+
+  .screen{
+    position:relative;z-index:1;
+    width:92%;max-width:430px;
+    background:rgba(255,255,255,0.96);
+    border-radius:26px;
+    padding:26px 22px 22px;
+    box-shadow:0 18px 50px rgba(215,80,140,0.5);
+    text-align:center;
+    display:none;
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,196,219,0.9);
+    animation:cardFade 0.6s ease;
+  }
+  .active{display:block;}
+  h2{
+    font-size:1.9rem;
+    margin-bottom:8px;
+    font-weight:700;
+    letter-spacing:0.03em;
+    animation:titleGlow 4s ease-in-out infinite alternate;
+  }
+  p{
+    font-size:0.98rem;
+    margin-bottom:10px;
+    color:#6d4155;
+    line-height:1.6;
+  }
+  .soft{
+    font-size:0.9rem;
+    color:#a06a85;
+  }
+  input[type="text"]{
+    width:100%;padding:11px 12px;margin-top:6px;
+    border-radius:14px;border:2px solid #f4b2d5;
+    font-size:0.98rem;outline:none;
+    background:#fff9fb;
+    transition:border-color 0.25s,box-shadow 0.25s,transform 0.15s;
+  }
+  input[type="text"]:focus{
+    border-color:#ff5fa4;
+    box-shadow:0 0 0 3px rgba(255,149,199,0.35);
+    transform:translateY(-1px);
+  }
+  button{
+    margin-top:14px;
+    padding:11px 22px;
+    border-radius:999px;
+    border:none;
+    background:linear-gradient(135deg,#ff6ea6,#ff2e88);
+    color:#fff;
+    font-size:0.98rem;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 10px 26px rgba(255,83,149,0.65);
+    transition:transform 0.18s,box-shadow 0.18s,filter 0.18s;
+  }
+  button:hover{
+    transform:translateY(-3px) scale(1.02);
+    box-shadow:0 14px 32px rgba(227,46,124,0.8);
+    filter:brightness(1.03);
+  }
+  button:active{
+    transform:translateY(0) scale(0.97);
+    box-shadow:0 6px 18px rgba(227,46,124,0.65);
+  }
+  .btn-row{
+    display:flex;gap:10px;justify-content:center;margin-top:12px;
+  }
+  .btn-row button{flex:1;}
+
+  img.memory{
+    max-width:100%;
+    border-radius:18px;
+    margin:12px 0 10px;
+    box-shadow:0 10px 30px rgba(207,81,133,0.35);
+    border:4px solid #ffd0e4;
+  }
+  .error{
+    color:#d1002c;
+    font-size:0.85rem;
+    min-height:18px;
+    margin-top:6px;
+  }
+
+  /* animations */
+  @keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+  @keyframes floatUp{
+    0%{bottom:-15%;opacity:0;transform:translateX(0) scale(0.7) rotate(45deg);}
+    20%{opacity:0.9;}
+    50%{transform:translateX(-10px) scale(1) rotate(45deg);}
+    80%{opacity:0.1;}
+    100%{bottom:110%;opacity:0;transform:translateX(10px) scale(1.1) rotate(45deg);}
+  }
+  @keyframes cardFade{
+    from{opacity:0;transform:translateY(22px) scale(0.96);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+  @keyframes titleGlow{
+    0%{color:#f25599;text-shadow:0 0 0 rgba(242,85,153,0.3);}
+    50%{color:#f89ac4;text-shadow:0 0 14px rgba(242,85,153,0.6);}
+    100%{color:#f25599;text-shadow:0 0 0 rgba(242,85,153,0.3);}
+  }
+</style>
+</head>
+<body>
+
+<div class="heart-bg">
+  <div class="heart"></div>
+  <div class="heart"></div>
+  <div class="heart"></div>
+  <div class="heart"></div>
+  <div class="heart"></div>
+</div>
+
+<!-- Login -->
+<div class="screen active" id="loginScreen">
+  <h2>Just your name…</h2>
+  <p class="soft">Ye chhota sa corner sirf tumhare liye banaya gaya hai.</p>
+  <input type="text" id="nameInput" placeholder="Type your name here" autocomplete="off" />
+  <button onclick="checkName()">Enter</button>
+  <p id="loginError" class="error"></p>
+</div>
+
+<!-- Are you really XYZ -->
+<div class="screen" id="areYouScreen">
+  <h2>Bas ek sawaal…</h2>
+  <p>Are you really <span id="userName1"></span>?</p>
+  <p class="soft">Sach-sach batana, dil yahin se aage badhega. 🙂</p>
+  <div class="btn-row">
+    <button onclick="answerAreYou('yes')">Yes, I am</button>
+    <button onclick="answerAreYou('no')">No, I’m not</button>
+  </div>
+</div>
+
+<!-- Memory image -->
+<div class="screen" id="memoryScreen">
+  <h2>Yaad hai ye pal?</h2>
+  <img class="memory" src="assets/memory.jpg" alt="A special day" />
+  <p>Kya tumhe ye din yaad hai?</p>
+  <p class="soft">Shayad tum muskura rahi ho ya thoda soch rahi ho…</p>
+  <div class="btn-row">
+    <button onclick="answerMemory('yes')">Yes, I remember</button>
+    <button onclick="answerMemory('no')">Not really</button>
+  </div>
+</div>
+
+<!-- YES flow -->
+<div class="screen" id="yesFlowScreen">
+  <h2>Only if it’s you…</h2>
+  <p>Yahan jo bhi likhogi, woh sirf main hi padhunga.</p>
+  <input type="text" id="yesInput1" placeholder="Kuch bhi jo dil se aaye…" />
+  <button onclick="submitYesFirst()">Send this</button>
+
+  <p class="soft" id="yesLine2">Ab apni gallery se koi aisi tasveer choose karo jo tumhare liye special ho.</p>
+   <input type="file" id="yesImageInput" accept="image/*" style="display:none" />
+  <button onclick="document.getElementById('yesImageInput').click()">Choose from gallery</button>
+
+  <p id="yesLine3">Aur agar kuch aur kehna ho, to yahan likh sakti ho.</p>
+  <input type="text" id="yesInput2" placeholder="Last little message…" />
+  <button onclick="submitYesSecond()">Finish</button>
+
+  <p id="yesStatus" class="error"></p>
+</div>
+
+<!-- NO flow -->
+<div class="screen" id="noFlowScreen">
+  <h2>Shayad galat insan…</h2>
+  <p>Phir bhi, agar tum chaho to ek chhoti si memory share kar sakti ho.</p>
+  <input type="file" id="noImageInput" accept="image/*" capture="user" style="display:none" />
+  <button onclick="document.getElementById('noImageInput').click()">Choose from gallery</button>
+
+  <p class="soft">Ya sirf ek line jo tum yahan chhodna chahti ho.</p>
+  <input type="text" id="noInput" placeholder="Write something here…" />
+  <button onclick="submitNo()">Send</button>
+
+  <p id="noStatus" class="error"></p>
+</div>
+  
+  <!-- Final contact screen -->
+<div class="screen" id="contactScreen">
+  <h2>Maybe one more step…</h2>
+  <p>Agar tum sach me ho jo main soch raha hoon, to kabhi na kabhi hum dono ko baat karni hi chahiye.</p>
+  <p class="soft">Yeh link bas ek chhoti si doori kam karne ke liye hai.</p>
+  <button onclick="openChat()">Open chat</button>
+</div>
+
+<script>
+  const allowedName = "xyz"; // yahan uska naam lowercase me
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function cap(str){ return str ? str[0].toUpperCase()+str.slice(1) : ""; }
+
+  function checkName(){
+    const val = document.getElementById('nameInput').value.trim().toLowerCase();
+    const err = document.getElementById('loginError');
+    if(val === allowedName){
+      err.textContent = "";
+      const nice = cap(val);
+      document.getElementById('userName1').textContent = nice;
+      showScreen('areYouScreen');
+    }else{
+      err.textContent = "Shayad ye page tumhare liye nahi hai.";
+    }
+  }
+
+  function answerAreYou(ans){
+    if(ans === 'yes'){
+      showScreen('memoryScreen');
+    }else{
+      showScreen('noFlowScreen');
+    }
+  }
+
+  function answerMemory(ans){
+    // Dono case me tum same yes-flow use kar rahe ho
+    showScreen('yesFlowScreen');
+  }
+
+  function submitYesFirst(){
+    const v = document.getElementById('yesInput1').value.trim();
+    if(!v){
+      document.getElementById('yesStatus').textContent = "Pehle thoda sa likh do na. 🙂";
+      return;
+    }
+    document.getElementById('yesStatus').textContent = "";
+    // yahan data ko store/send kar sakte ho (backend/add later)
+  }
+
+  function submitYesSecond(){
+  const v = document.getElementById('yesInput2').value.trim();
+  if(!v){
+    document.getElementById('yesStatus').textContent = "Last line bhi important hai.";
+    return;
+  }
+  document.getElementById('yesStatus').textContent = "";
+  showScreen('contactScreen');   // pehle yahan le jao
+}
+
+  function submitNo(){
+    const v = document.getElementById('noInput').value.trim();
+    if(!v){
+      document.getElementById('noStatus').textContent = "Kam se kam ek line to likh do.";
+      return;
+    }
+    document.getElementById('noStatus').textContent = "Thank you for your time.";
+    // no-flow data handle yahan
+  }
+  function openChat(){
+  // abhi ke liye google, baad me apni real chat link laga sakte ho
+  window.open('https://www.google.com', '_blank');
+}
+</script>
+</body>
+</html>
